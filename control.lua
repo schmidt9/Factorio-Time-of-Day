@@ -1,21 +1,48 @@
---https://forums.factorio.com/viewtopic.php?p=200995#p200995
---http://lua-api.hornwitser.no/1.1.49/LuaGameScript.html#LuaGameScript.remove_path
+-- Updated version of https://forums.factorio.com/viewtopic.php?p=5937#p5937
 
---Handles hot key
-script.on_event("perform-quicksave", function(event)
-  local max_saves_number = 3
-  local last_save_number = global["last_save_number"]
+local player
 
-  if (last_save_number == nil or last_save_number >= max_saves_number) then
-    last_save_number = 0
+script.on_event(defines.events.on_tick, function(event)
+
+  if not player then
+    player = game.get_player(1)
   end
 
-  last_save_number = last_save_number + 1
+  if not player.gui.left.label_time then
+    player.gui.left.add{
+      type="label",
+      name="label_time",
+      caption="time"
+    }
+  end
+  
+  -- https://github.com/wube/factorio-data/blob/master/core/prototypes/style.lua
+  player.gui.left.label_time.style.font = "default-bold"
+  player.gui.left.label_time.style.font_color = {r = 1, g = 1, b = 1}
 
-  global["last_save_number"] = last_save_number
+  -- format time
+  local time = game.surfaces[1].daytime
+  time = time + 0.5
+  if time > 1 then
+    time = time - 1
+  end
+  
+  -- format hour
+  local hour = math.floor(time * 24)
+  local meridiem = "AM"
+  if hour > 12 then
+    hour = hour - 12
+    meridiem = "PM"
+  end
+  
+  -- format minute
+  local minute = math.floor(60 * ((time * 24) - math.floor(time * 24)))
+  if minute < 10 then
+    minute = "0" .. minute
+  end
+  
+  -- display time
+  player.gui.left.label_time.caption =
+  hour .. ":" .. minute .. " " .. meridiem
 
-  local auto_save_name = string.format("quick%d", last_save_number)
-  local auto_save_message = string.format("Saved '_autosave-%s'", auto_save_name)
-  game.auto_save(auto_save_name)
-  game.print(auto_save_message)
-end)
+  end)
