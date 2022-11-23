@@ -14,14 +14,15 @@ script.on_event(defines.events.on_tick, function(event)
       name="label_time",
       caption="time"
     }
+
+    -- https://github.com/wube/factorio-data/blob/master/core/prototypes/style.lua
+    -- https://lua-api.factorio.com/latest/LuaStyle.html
+    local style = player.gui.left.label_time.style
+    style.font = "default-bold"
+    style.font_color = {r = 1, g = 1, b = 1}
+    style.top_padding = 2
+    style.left_padding = 4
   end
-  
-  -- https://github.com/wube/factorio-data/blob/master/core/prototypes/style.lua
-  local style = player.gui.left.label_time.style
-  style.font = "default-bold"
-  style.font_color = {r = 1, g = 1, b = 1}
-  style.top_padding = 2
-  style.left_padding = 4
 
   -- format time
   local time = game.surfaces[1].daytime
