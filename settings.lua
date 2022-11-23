@@ -1,0 +1,2 @@
+-- https://wiki.factorio.com/Tutorial:Mod_settings
+-- do nothing
