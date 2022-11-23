@@ -17,8 +17,11 @@ script.on_event(defines.events.on_tick, function(event)
   end
   
   -- https://github.com/wube/factorio-data/blob/master/core/prototypes/style.lua
-  player.gui.left.label_time.style.font = "default-bold"
-  player.gui.left.label_time.style.font_color = {r = 1, g = 1, b = 1}
+  local style = player.gui.left.label_time.style
+  style.font = "default-bold"
+  style.font_color = {r = 1, g = 1, b = 1}
+  style.top_padding = 2
+  style.left_padding = 4
 
   -- format time
   local time = game.surfaces[1].daytime
